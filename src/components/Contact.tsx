@@ -19,7 +19,7 @@ const Contact = () => {
 
           <div className="flex items-center justify-center gap-8">
             <a
-              href="https://github.com"
+              href="https://github.com/sinnerfilozofiya"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors font-mono text-sm"
@@ -28,7 +28,7 @@ const Contact = () => {
               GitHub
             </a>
             <a
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/in/sina-bagherzadeh-khiavi"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors font-mono text-sm"
