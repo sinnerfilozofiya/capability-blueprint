@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Github, Linkedin, Mail } from "lucide-react";
+import { siteConfig } from "@/config/links";
 
 const Contact = () => {
   return (
@@ -19,7 +20,7 @@ const Contact = () => {
 
           <div className="flex items-center justify-center gap-8">
             <a
-              href="https://github.com/sinnerfilozofiya"
+              href={siteConfig.github}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors font-mono text-sm"
@@ -28,7 +29,7 @@ const Contact = () => {
               GitHub
             </a>
             <a
-              href="https://www.linkedin.com/in/sina-bagherzadeh-khiavi"
+              href={siteConfig.linkedin}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors font-mono text-sm"
@@ -37,7 +38,7 @@ const Contact = () => {
               LinkedIn
             </a>
             <a
-              href="mailto:sina@example.com"
+              href={`mailto:${siteConfig.email}`}
               className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors font-mono text-sm"
             >
               <Mail className="h-5 w-5" />
@@ -46,7 +47,7 @@ const Contact = () => {
           </div>
 
           <p className="mt-16 font-mono text-xs text-text-dim">
-            © {new Date().getFullYear()} Sina Bagherzadeh Khiavi
+            © {new Date().getFullYear()} {siteConfig.name}
           </p>
         </motion.div>
       </div>
