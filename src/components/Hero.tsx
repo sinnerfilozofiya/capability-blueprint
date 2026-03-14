@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Github, Linkedin, ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { siteConfig } from "@/config/links";
 
 const Hero = () => {
   return (
@@ -18,20 +19,20 @@ const Hero = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <p className="font-mono text-sm tracking-[0.3em] uppercase text-primary mb-6">
-            Systems Engineer
+            {siteConfig.title}
           </p>
           <h1 className="text-5xl sm:text-7xl font-bold tracking-tight mb-8 text-foreground leading-[1.1]">
-            Sina Bagherzadeh
+            {siteConfig.name.split(" ").slice(0, 2).join(" ")}
             <br />
-            <span className="text-muted-foreground font-light">Khiavi</span>
+            <span className="text-muted-foreground font-light">
+              {siteConfig.name.split(" ").slice(2).join(" ")}
+            </span>
           </h1>
           <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-4 leading-relaxed">
-            I design distributed systems that connect
-            <br className="hidden sm:block" />
-            software, hardware, and data pipelines.
+            {siteConfig.description}
           </p>
           <p className="font-mono text-xs tracking-wider text-text-dim mb-12">
-            Backend Architect • Embedded Systems • Distributed Infrastructure
+            {siteConfig.tagline}
           </p>
         </motion.div>
 
@@ -45,13 +46,13 @@ const Hero = () => {
             <a href="#engineering">Explore Engineering</a>
           </Button>
           <Button variant="hero-outline" size="lg" asChild>
-            <a href="https://github.com/sinnerfilozofiya" target="_blank" rel="noopener noreferrer">
+            <a href={siteConfig.github} target="_blank" rel="noopener noreferrer">
               <Github className="mr-2 h-4 w-4" />
               GitHub
             </a>
           </Button>
           <Button variant="hero-outline" size="lg" asChild>
-            <a href="https://www.linkedin.com/in/sina-bagherzadeh-khiavi" target="_blank" rel="noopener noreferrer">
+            <a href={siteConfig.linkedin} target="_blank" rel="noopener noreferrer">
               <Linkedin className="mr-2 h-4 w-4" />
               LinkedIn
             </a>
