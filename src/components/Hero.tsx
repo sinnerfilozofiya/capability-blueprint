@@ -45,7 +45,7 @@ const Hero = () => {
             <a href="#engineering">Explore Engineering</a>
           </Button>
           <Button variant="hero-outline" size="lg" asChild>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+            <a href="https://github.com/sinnerfilozofiya" target="_blank" rel="noopener noreferrer">
               <Github className="mr-2 h-4 w-4" />
               GitHub
             </a>
