@@ -32,7 +32,7 @@ export interface Project {
   summary: string;
   /** Detailed description shown on the project page */
   description: string;
-  /** Path or URL to a cover/thumbnail image */
+  /** Path or URL to a cover/thumbnail image (card + fallback on detail page) */
   image: string;
   /** Link to the source code repository */
   repoUrl: string;
@@ -42,84 +42,49 @@ export interface Project {
   technologies: string[];
   /** Key highlights / features (bullet points on detail page) */
   highlights: string[];
+  /** Optional: video shown on the project detail page instead of the cover image */
+  detailVideo?: string;
+  /** Optional: HTML string to embed in an iframe so visitors can interact with it */
+  embedHtml?: string;
+  /** Optional: JSON data passed into the embedded HTML (e.g. via window.__PROJECT_EMBED_DATA__ or #project-embed-data) */
+  embedData?: Record<string, unknown>;
+  /** Optional: iframe src for a full-page viewer (e.g. viewer.html?viz_url=.../data.json). Shown in "Try it" when set. */
+  embedViewerUrl?: string;
 }
 
 export const projects: Project[] = [
   {
-    slug: "distributed-pipeline",
-    title: "Distributed Data Pipeline",
-    summary: "High-throughput event processing system handling millions of messages per second.",
+    slug: "jump-test-algorithms",
+    title: "Vertical Jump Test Algorithms",
+    summary: "Algorithms for counter-movement jump (CMJ), squat jump (SJ), and drop jump (DJ) analysis from force plate data.",
     description:
-      "A distributed data pipeline built to process and route sensor data from IoT devices across multiple regions with guaranteed delivery and minimal latency.",
-    image: "/placeholder.svg",
-    repoUrl: "https://github.com/sinnerfilozofiya/distributed-pipeline",
-    technologies: ["Go", "Kafka", "PostgreSQL", "Docker", "Kubernetes"],
+      "This project implements detection of events and phases, and computes metrics, for vertical jump tests using vertical ground reaction force (GRF) time series from a force plate. The scope covers counter-movement jump (CMJ): input is total (and optionally left/right) force in newtons with known sample count and trial duration; output includes event sample indices, phase boundaries, and derived metrics (jump height, power, RFD, phase impulses, etc.).\n\nBodyweight and mass are inferred from a weighing window (first 1 s). Detected points include take-off, landing, movement onset, minimum force, eccentric end (peak eccentric velocity), and velocity zero (bottom of dip). Phases derived are unweighting, braking, propulsion (concentric), flight, and landing. Metrics include jump height (impulse–momentum and flight-time methods), peak power, rate of force development (RFD), phase impulses and durations, RSImod, countermovement depth, and optional left/right asymmetry. Optional low-pass filtering can be applied before detection and kinematics.",
+    image: "/projects/jump-test-algorithms/cover.png",
+    repoUrl: "https://github.com/sinnerfilozofiya/jumptest",
+    technologies: ["Python", "Signal processing", "Biomechanics", "SciPy", "NumPy"],
     highlights: [
-      "Processes 2M+ events per second",
-      "99.99% uptime SLA",
-      "Auto-scaling based on queue depth",
+      "Event detection: take-off, landing, movement onset, min force, eccentric end, velocity zero",
+      "Phase boundaries: unweighting, braking, propulsion, flight, landing",
+      "Jump height (impulse–momentum and flight-time), peak power, RFD",
+      "Phase impulses and durations; RSImod; optional left/right asymmetry",
+      "Optional low-pass filter for noise reduction; trial validity checks",
     ],
+    detailVideo: "/projects/jump-test-algorithms/cmj-project-video.mp4",
+    embedViewerUrl: "/projects/jump-test-algorithms/viewr-html/viewer.html?viz_url=/projects/jump-test-algorithms/viewr-html/data.json",
   },
   {
-    slug: "firmware-ota",
-    title: "Firmware OTA Platform",
-    summary: "Over-the-air update system for embedded devices with rollback support.",
+    slug: "forceplate-hardware",
+    title: "Force Plate — Hardware & MCU",
+    summary: "Hardware design and MCU firmware for force plate sensing and data acquisition.",
     description:
-      "A secure firmware delivery platform enabling remote updates for thousands of edge devices with delta patching, integrity verification, and automatic rollback on failure.",
+      "Describe your force plate hardware and firmware project here: PCB/sensors, MCU, and data pipeline. You can edit this in src/config/links.ts.",
     image: "/placeholder.svg",
-    repoUrl: "https://github.com/sinnerfilozofiya/firmware-ota",
-    liveUrl: "https://ota-demo.example.com",
-    technologies: ["Rust", "C", "MQTT", "AWS IoT", "FreeRTOS"],
+    repoUrl: "https://github.com/your-username/forceplate-hardware",
+    technologies: ["C", "Embedded", "PCB", "MCU"],
     highlights: [
-      "Delta updates reduce bandwidth by 80%",
-      "Cryptographic signature verification",
-      "Zero-downtime rollback mechanism",
+      "Force plate hardware design",
+      "MCU firmware for data acquisition",
+      "Real-time force measurement",
     ],
   },
-  {
-    slug: "infra-orchestrator",
-    title: "Infrastructure Orchestrator",
-    summary: "Automated provisioning and monitoring for hybrid cloud environments.",
-    description:
-      "A self-service platform that provisions, configures, and monitors infrastructure across on-premise and cloud environments with a unified control plane.",
-    image: "/placeholder.svg",
-    repoUrl: "https://github.com/sinnerfilozofiya/infra-orchestrator",
-    technologies: ["Python", "Terraform", "Ansible", "Prometheus", "Grafana"],
-    highlights: [
-      "Unified dashboard for hybrid infrastructure",
-      "Automated compliance scanning",
-      "Reduced provisioning time from hours to minutes",
-    ],
-  },
-  {
-    slug: "realtime-comms",
-    title: "Real-Time Comms Engine",
-    summary: "Low-latency communication layer for industrial control systems.",
-    description:
-      "A custom protocol stack built for sub-millisecond communication between PLCs and supervisory systems in industrial automation environments.",
-    image: "/placeholder.svg",
-    repoUrl: "https://github.com/sinnerfilozofiya/realtime-comms",
-    technologies: ["C++", "ZeroMQ", "Protocol Buffers", "Linux RT"],
-    highlights: [
-      "Sub-millisecond message delivery",
-      "Deterministic scheduling on RT kernels",
-      "Hot-standby failover support",
-    ],
-  },
-  {
-    slug: "sensor-mesh",
-    title: "Sensor Mesh Network",
-    summary: "Self-healing wireless sensor network for environmental monitoring.",
-    description:
-      "A mesh networking solution for deploying hundreds of low-power sensors across large areas with automatic topology discovery and self-healing capabilities.",
-    image: "/placeholder.svg",
-    repoUrl: "https://github.com/sinnerfilozofiya/sensor-mesh",
-    technologies: ["C", "Zigbee", "RTOS", "Python", "InfluxDB"],
-    highlights: [
-      "Self-healing mesh with 99.9% reliability",
-      "5-year battery life on sensor nodes",
-      "Real-time anomaly detection pipeline",
-    ],
-  },
-  // ---- ADD MORE PROJECTS BELOW ----
 ];

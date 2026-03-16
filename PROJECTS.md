@@ -35,6 +35,9 @@ interface Project {
   liveUrl?: string;
   technologies: string[];
   highlights: string[];
+  detailVideo?: string;   // optional: video on detail page instead of image
+  embedHtml?: string;     // optional: HTML for "Try it" iframe
+  embedData?: Record<string, unknown>;  // optional: JSON for embedHtml to read
 }
 ```
 
@@ -60,6 +63,9 @@ interface Project {
 |-------|----------|----------------|---------|
 | **description** | Yes | Full “About” text: 1–3 paragraphs. Shown in the main content area. Can use `\n` for line breaks. | Multi-line string describing what the project does, why it exists, and main outcomes. |
 | **highlights** | Yes | Array of short bullet points (achievements, metrics, features). Shown in the sidebar. | `["Delta updates reduce bandwidth by 80%", "Cryptographic signature verification"]` |
+| **detailVideo** | No | Path or URL to a video shown on the detail page **instead of** the cover image. Card still uses **image**. | `"/projects/my-project/demo.mp4"` |
+| **embedHtml** | No | Raw HTML string for the “Try it” iframe so visitors can interact with it. Use with **embedData** to pass JSON. | `"<div id='app'>...</div><script>...</script>"` |
+| **embedData** | No | JSON object passed into the embedded HTML. In the iframe, read via `document.getElementById('project-embed-data').dataset.json` then `JSON.parse(...)`. | `{ "samples": [], "config": {} }` |
 
 Same **slug**, **title**, **summary**, **image**, **technologies**, **repoUrl**, **liveUrl** are used on the detail page as on the card; **description** and **highlights** are only used on the detail page but must still be provided for every project.
 

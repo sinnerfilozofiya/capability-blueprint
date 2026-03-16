@@ -1,8 +1,28 @@
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, ExternalLink, Github } from "lucide-react";
+import { ArrowLeft, ExternalLink, Github, Maximize2 } from "lucide-react";
 import { projects } from "@/config/links";
 import { Button } from "@/components/ui/button";
+import JumpTestEngineeringDeepDive from "@/components/JumpTestEngineeringDeepDive";
+
+/** Escape string for safe use inside an HTML attribute (e.g. data-json). */
+function escapeHtmlAttr(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+/** Build iframe srcdoc for embedded HTML + JSON. Embed HTML can read data via getElementById('project-embed-data').dataset.json (JSON.parse). */
+function buildEmbedSrcdoc(embedHtml: string, embedData: Record<string, unknown> | undefined): string {
+  const dataJson = escapeHtmlAttr(JSON.stringify(embedData ?? {}));
+  return `<!DOCTYPE html>
+<html><head><meta charset="utf-8"></head><body>
+<div id="project-embed-data" data-json="${dataJson}"></div>
+${embedHtml}
+</body></html>`;
+}
 
 const ProjectDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -22,9 +42,9 @@ const ProjectDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
-      <div className="border-b border-border">
+      <div className="border-b border-border bg-background">
         <div className="max-w-4xl mx-auto px-6 py-6">
           <Link
             to="/#projects"
@@ -38,6 +58,7 @@ const ProjectDetail = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
+            className="text-foreground"
           >
             <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">
               {project.title}
@@ -67,7 +88,7 @@ const ProjectDetail = () => {
         </div>
       </div>
 
-      {/* Cover image */}
+      {/* Hero: video (if set) or cover image */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -75,23 +96,35 @@ const ProjectDetail = () => {
         className="max-w-4xl mx-auto px-6 py-10"
       >
         <div className="rounded-lg overflow-hidden border border-border bg-secondary">
-          <img
-            src={project.image}
-            alt={project.title}
-            className="w-full object-cover"
-          />
+          {project.detailVideo ? (
+            <video
+              src={project.detailVideo}
+              controls
+              playsInline
+              className="w-full aspect-video object-contain bg-black"
+              poster={project.image}
+            >
+              Your browser does not support the video tag.
+            </video>
+          ) : (
+            <img
+              src={project.image}
+              alt={project.title}
+              className="w-full object-cover"
+            />
+          )}
         </div>
       </motion.div>
 
       {/* Content */}
-      <div className="max-w-4xl mx-auto px-6 pb-20">
+      <div className="max-w-4xl mx-auto px-6 pb-20 bg-background text-foreground">
         <div className="grid md:grid-cols-3 gap-10">
           {/* Description */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="md:col-span-2"
+            className="md:col-span-2 text-foreground"
           >
             <h2 className="font-mono text-xs tracking-[0.3em] uppercase text-primary mb-4">
               About
@@ -146,6 +179,60 @@ const ProjectDetail = () => {
             )}
           </motion.div>
         </div>
+
+        {/* Engineering deep dive (project-specific) */}
+        {project.slug === "jump-test-algorithms" && <JumpTestEngineeringDeepDive />}
+
+        {/* Optional: embedded viewer (iframe URL) or HTML + JSON — full width, tall to avoid inner scroll */}
+        {(project.embedViewerUrl || project.embedHtml) && (
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="w-full max-w-none px-0 pb-20"
+          >
+            <div className="max-w-4xl mx-auto px-6 mb-4 flex flex-wrap items-center justify-between gap-4">
+              <h2 className="font-mono text-xs tracking-[0.3em] uppercase text-primary">
+                Try it
+              </h2>
+              {project.embedViewerUrl && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  asChild
+                  className="font-mono text-xs tracking-wider border-primary/40 text-primary hover:bg-primary/10 hover:border-primary/60"
+                >
+                  <a
+                    href={project.embedViewerUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2"
+                  >
+                    <Maximize2 className="w-4 h-4" />
+                    Open viewer in full screen
+                  </a>
+                </Button>
+              )}
+            </div>
+            <div className="w-full rounded-none sm:rounded-lg overflow-hidden border-0 sm:border border-border bg-card">
+              {project.embedViewerUrl ? (
+                <iframe
+                  title={`${project.title} — interactive viewer`}
+                  src={project.embedViewerUrl}
+                  className="w-full h-[100vh] min-h-[480px] border-0 block"
+                  sandbox="allow-scripts allow-same-origin"
+                />
+              ) : (
+                <iframe
+                  title={`${project.title} — interactive demo`}
+                  srcDoc={buildEmbedSrcdoc(project.embedHtml!, project.embedData)}
+                  className="w-full min-h-[calc(100vh-8rem)] min-h-[1200px] border-0 block"
+                  sandbox="allow-scripts allow-same-origin"
+                />
+              )}
+            </div>
+          </motion.section>
+        )}
       </div>
     </div>
   );
