@@ -14,7 +14,7 @@ export const siteConfig = {
   // Social links
   github: "https://github.com/sinnerfilozofiya",
   linkedin: "https://www.linkedin.com/in/sina-bagherzadeh-khiavi",
-  email: "sina@example.com",
+  email: "sinaxhiavi@gmail.com",
 };
 
 // ============================================================
