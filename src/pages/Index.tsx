@@ -1,4 +1,5 @@
 import Hero from "@/components/Hero";
+import ScrollBridge from "@/components/ScrollBridge";
 import EngineeringDomains from "@/components/EngineeringDomains";
 import Capabilities from "@/components/Capabilities";
 import Technologies from "@/components/Technologies";
@@ -11,6 +12,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Hero />
+      <ScrollBridge />
       <EngineeringDomains />
       <Projects />
       <Capabilities />
