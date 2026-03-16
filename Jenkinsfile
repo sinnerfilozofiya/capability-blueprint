@@ -3,19 +3,41 @@ pipeline {
 
     environment {
         PROJECT_DIR = "/var/www/portfolio"
+        GITHUB_CONTEXT = "Jenkins CI"
     }
 
     stages {
 
-        stage('Clone Repository') {
+        stage('Notify GitHub Build Start') {
             steps {
-                git branch: 'main', url: 'https://github.com/sinnerfilozofiya/capability-blueprint.git'
+                script {
+                    githubNotify context: "${GITHUB_CONTEXT}", status: "PENDING"
+                }
+            }
+        }
+
+        stage('Checkout Code') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Node Version') {
+            steps {
+                sh 'node -v'
+                sh 'npm -v'
             }
         }
 
         stage('Install Dependencies') {
             steps {
                 sh 'npm install'
+            }
+        }
+
+        stage('Lint (optional)') {
+            steps {
+                sh 'npm run lint || true'
             }
         }
 
@@ -28,21 +50,36 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh '''
+                echo "Clearing old files..."
                 rm -rf $PROJECT_DIR/*
+
+                echo "Copying build files..."
                 cp -r dist/* $PROJECT_DIR/
+
+                echo "Deployment complete"
                 '''
             }
         }
-
     }
 
     post {
+
         success {
-            echo "Deployment successful"
+            script {
+                githubNotify context: "${GITHUB_CONTEXT}", status: "SUCCESS"
+            }
         }
 
         failure {
-            echo "Build failed"
+            script {
+                githubNotify context: "${GITHUB_CONTEXT}", status: "FAILURE"
+            }
+        }
+
+        unstable {
+            script {
+                githubNotify context: "${GITHUB_CONTEXT}", status: "ERROR"
+            }
         }
     }
 }
