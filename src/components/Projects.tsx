@@ -5,12 +5,12 @@ import { projects } from "@/config/links";
 import { useRef, useState, useEffect, useCallback } from "react";
 
 const Projects = () => {
-  if (projects.length === 0) return null;
-
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
+
+  if (projects.length === 0) return null;
 
   const checkScroll = useCallback(() => {
     const el = scrollRef.current;
