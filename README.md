@@ -3,7 +3,7 @@
 ## Project info
 
 **URL**: https://sinak.dev
-
+https://sina.codes
 ## How can I edit this code?
 
 There are several ways of editing your application.
