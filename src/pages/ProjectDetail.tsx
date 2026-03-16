@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft, ExternalLink, Github, Maximize2 } from "lucide-react";
@@ -27,6 +28,10 @@ ${embedHtml}
 const ProjectDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   const project = projects.find((p) => p.slug === slug);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [slug]);
 
   if (!project) {
     return (
