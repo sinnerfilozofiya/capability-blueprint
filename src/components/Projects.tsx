@@ -30,25 +30,7 @@ const Projects = () => {
 
   if (projects.length === 0) return null;
 
-  const checkScroll = useCallback(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    setCanScrollLeft(el.scrollLeft > 10);
-    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 10);
 
-    // Calculate active index based on scroll position
-    const cardWidth = el.scrollWidth / projects.length;
-    const idx = Math.round(el.scrollLeft / cardWidth);
-    setActiveIndex(Math.min(idx, projects.length - 1));
-  }, []);
-
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    el.addEventListener("scroll", checkScroll, { passive: true });
-    checkScroll();
-    return () => el.removeEventListener("scroll", checkScroll);
-  }, [checkScroll]);
 
   const scroll = (direction: "left" | "right") => {
     const el = scrollRef.current;
