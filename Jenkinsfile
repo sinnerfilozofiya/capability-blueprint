@@ -32,6 +32,8 @@ pipeline {
                 cp -r dist/* $PROJECT_DIR/
                 '''
             }
+            // SPA routes (/projects/*, etc.): server must serve index.html for non-file requests.
+            // See nginx-spa.conf.example for nginx; .htaccess in dist handles Apache.
         }
 
     }

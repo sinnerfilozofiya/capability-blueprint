@@ -1,0 +1,18 @@
+# Example nginx config for SPA deployment (e.g. /var/www/portfolio)
+# Use this so /projects/* and other client routes don't return 404 on reload or direct open.
+# Include the relevant part in your server block.
+
+server {
+    listen 80;
+    server_name your-domain.com;
+    root /var/www/portfolio;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2)$ {
+        try_files $uri =404;
+    }
+}
