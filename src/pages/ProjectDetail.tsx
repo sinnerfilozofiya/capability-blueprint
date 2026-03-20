@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, ExternalLink, Github, Maximize2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, ExternalLink, Github, Maximize2 } from "lucide-react";
 import { projects } from "@/config/links";
 import { Button } from "@/components/ui/button";
-import JumpTestEngineeringDeepDive from "@/components/JumpTestEngineeringDeepDive";
+import MarkdownWithMermaid from "@/components/MarkdownWithMermaid";
+import jumpTestDetailMd from "@/content/jump-test-algorithms-detail.md?raw";
+import forceplateDetailMd from "@/content/forceplate-hardware-detail.md?raw";
 
 /** Escape string for safe use inside an HTML attribute (e.g. data-json). */
 function escapeHtmlAttr(s: string): string {
@@ -124,19 +126,27 @@ const ProjectDetail = () => {
       {/* Content */}
       <div className="max-w-4xl mx-auto px-6 pb-20 bg-background text-foreground">
         <div className="grid md:grid-cols-3 gap-10">
-          {/* Description */}
+          {/* Description: full markdown for jump-test-algorithms, otherwise short description */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
             className="md:col-span-2 text-foreground"
           >
-            <h2 className="font-mono text-xs tracking-[0.3em] uppercase text-primary mb-4">
-              About
-            </h2>
-            <p className="text-secondary-foreground leading-relaxed whitespace-pre-line">
-              {project.description}
-            </p>
+            {project.slug === "jump-test-algorithms" ? (
+              <MarkdownWithMermaid content={jumpTestDetailMd} />
+            ) : project.slug === "forceplate-hardware" ? (
+              <MarkdownWithMermaid content={forceplateDetailMd} />
+            ) : (
+              <>
+                <h2 className="font-mono text-xs tracking-[0.3em] uppercase text-primary mb-4">
+                  About
+                </h2>
+                <p className="text-secondary-foreground leading-relaxed whitespace-pre-line">
+                  {project.description}
+                </p>
+              </>
+            )}
           </motion.div>
 
           {/* Sidebar */}
@@ -182,11 +192,46 @@ const ProjectDetail = () => {
                 </ul>
               </div>
             )}
+
+            {/* Data collection hardware — jump test algorithms → force plate */}
+            {project.slug === "jump-test-algorithms" && (
+              <div>
+                <h3 className="font-mono text-xs tracking-[0.3em] uppercase text-primary mb-3">
+                  Data collection hardware
+                </h3>
+                <p className="text-sm text-secondary-foreground leading-relaxed mb-3">
+                  The force data these algorithms expect is collected by a custom force plate system: dual-node Teensy + ESP32 hardware with high-rate ADC, wireless sync, and BLE streaming.
+                </p>
+                <Link
+                  to="/projects/forceplate-hardware"
+                  className="inline-flex items-center gap-2 font-mono text-xs text-primary hover:underline"
+                >
+                  Force Plate Embedded System
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            )}
+
+            {/* Example usage / real use case — force plate → jump test algorithms */}
+            {project.slug === "forceplate-hardware" && (
+              <div>
+                <h3 className="font-mono text-xs tracking-[0.3em] uppercase text-primary mb-3">
+                  Example usage
+                </h3>
+                <p className="text-sm text-secondary-foreground leading-relaxed mb-3">
+                  The force data from this system is designed to feed into analysis pipelines. A concrete use case is vertical jump testing: the same hardware streams the eight-channel force signal that the algorithms project uses to detect events, phases, and metrics (e.g. jump height, RFD, RSImod).
+                </p>
+                <Link
+                  to="/projects/jump-test-algorithms"
+                  className="inline-flex items-center gap-2 font-mono text-xs text-primary hover:underline"
+                >
+                  Vertical Jump Test Algorithms
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            )}
           </motion.div>
         </div>
-
-        {/* Engineering deep dive (project-specific) */}
-        {project.slug === "jump-test-algorithms" && <JumpTestEngineeringDeepDive />}
 
         {/* Optional: embedded viewer (iframe URL) or HTML + JSON — full width, tall to avoid inner scroll */}
         {(project.embedViewerUrl || project.embedHtml) && (

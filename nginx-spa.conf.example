@@ -1,18 +1,35 @@
-# Example nginx config for SPA deployment (e.g. /var/www/portfolio)
-# Use this so /projects/* and other client routes don't return 404 on reload or direct open.
-# Include the relevant part in your server block.
+# nginx config for SPA (Vite/React) — use so /projects/* and reload don't 404 or 403
+# Place in /etc/nginx/sites-available/ and symlink from sites-enabled, or include in your server block.
 
 server {
     listen 80;
-    server_name your-domain.com;
+    server_name your-domain.com;   # or _ for default
     root /var/www/portfolio;
     index index.html;
 
+    # SPA fallback: missing paths (e.g. /projects/jump-test-algorithms) serve index.html.
+    # Use only $uri /index.html (no $uri/). If you use $uri/ and a real directory exists
+    # (e.g. public/projects/jump-test-algorithms/ in dist), nginx serves that dir, finds no index → 403.
     location / {
-        try_files $uri $uri/ /index.html;
+        try_files $uri /index.html;
     }
 
-    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2)$ {
+    # Optional: cache static assets
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|mp4|webm)$ {
         try_files $uri =404;
+        add_header Cache-Control "public, max-age=31536000";
+    }
+
+    # Deny hidden files
+    location ~ /\. {
+        deny all;
     }
 }
+
+# --- If you see 403 Forbidden ---
+# 1. Permissions: nginx runs as www-data. The app files must be readable:
+#      sudo chown -R www-data:www-data /var/www/portfolio
+#      sudo chmod -R 755 /var/www/portfolio
+#      sudo find /var/www/portfolio -type f -exec chmod 644 {} \;
+# 2. Ensure the server block above uses "try_files $uri $uri/ /index.html" under location /.
+# 3. Reload nginx: sudo nginx -t && sudo systemctl reload nginx
