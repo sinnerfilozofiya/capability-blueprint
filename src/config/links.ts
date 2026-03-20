@@ -80,7 +80,7 @@ export const projects: Project[] = [
     description:
       "I designed and built a distributed force plate system around Teensy 4.1 and ESP32 MCUs, combining high-resolution load-cell acquisition with wireless node coordination and BLE client access. Each plate uses a custom ADS1256 acquisition stack for four channels of calibrated force data, while the ESP32 layer handles SPI transport, ESP-NOW wireless communication, battery telemetry, command routing, and BLE streaming. The final system exposes a synchronized eight-channel data stream to a client application while preserving deterministic sampling at the sensor layer.",
     image: "/projects/forceplate-hardware/force-plate-cover.png",
-    repoUrl: "https://github.com/can-can-group/forceplate-hardware-code",
+    repoUrl: "https://github.com/sinnerfilozofiya/forceplate-mcu-codes",
     technologies: [
       "C/C++",
       "Teensy 4.1",
