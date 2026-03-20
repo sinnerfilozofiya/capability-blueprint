@@ -60,7 +60,7 @@ export const projects: Project[] = [
     description:
       "This project implements detection of events and phases, and computes metrics, for vertical jump tests using vertical ground reaction force (GRF) time series from a force plate. The scope covers counter-movement jump (CMJ): input is total (and optionally left/right) force in newtons with known sample count and trial duration; output includes event sample indices, phase boundaries, and derived metrics (jump height, power, RFD, phase impulses, etc.).\n\nBodyweight and mass are inferred from a weighing window (first 1 s). Detected points include take-off, landing, movement onset, minimum force, eccentric end (peak eccentric velocity), and velocity zero (bottom of dip). Phases derived are unweighting, braking, propulsion (concentric), flight, and landing. Metrics include jump height (impulse–momentum and flight-time methods), peak power, rate of force development (RFD), phase impulses and durations, RSImod, countermovement depth, and optional left/right asymmetry. Optional low-pass filtering can be applied before detection and kinematics.",
     image: "/projects/jump-test-algorithms/cover.png",
-    repoUrl: "https://github.com/sinnerfilozofiya/jumptest",
+    repoUrl: "https://github.com/sinnerfilozofiya/jumptest-analysis",
     technologies: ["Python", "Signal processing", "Biomechanics", "SciPy", "NumPy"],
     highlights: [
       "Event detection: take-off, landing, movement onset, min force, eccentric end, velocity zero",
